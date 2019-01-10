@@ -36,6 +36,9 @@ body {
     border-radius: 50%;
 }
 
+.count-badge.yellow {
+    background: yellow;
+}
 .list {
     margin: 0;
     padding: 0;

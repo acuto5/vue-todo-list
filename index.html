@@ -22,7 +22,10 @@
                 </form>
             </div>
             <div class="block">
-                <h1>Todo list <span v-show="list.length" class="count-badge">{{list.length}}</span></h1>
+                <h1>
+                    Todo list
+                    <count-badge v-show="list.length" class="yellow" :count="list.length"></count-badge>
+                </h1>
                 <p v-if="!list.length">Your todo list is empty</p>
                 <ul class="list" id="list">
                     <li class="item"
@@ -30,18 +33,43 @@
                         v-for="(item, index) in list"
                         :key="'item' + index"
                     >
-                        <span @click="onCompleted(index)">{{index}}. {{item.title}}</span>
+                        <todo-entry
+                                :index="index"
+                                :title="item.title"
+                                v-on:my_toggle="onStatusToggle(index)"
+                        ></todo-entry>
                         <button class="delete" v-on:click="onDelete(index)">Delete</button>
                     </li>
                 </ul>
+            </div>
+
+            <div class="block">
+                <p>Total count <count-badge :count="list.length"></count-badge></p>
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
 
         <script>
+            //registering
+            var TodoEntryComponent = {
+                name: 'todo-entry-name',
+                props: ['index', 'title'],
+                template: '<span class="todo-entry" v-on:click="$emit(\'my_toggle\')"><em>{{index}}</em>. {{title}}</span>'
+            };
+
+            var CountBadgeComponent = {
+                name: 'count-badge-name',
+                props: ['count'],
+                template: '<span class="count-badge">{{count}}</span>'
+            };
+
             new Vue({
                 name: 'vue-app',
                 el: '#app',
+                components: {
+                    'todo-entry': TodoEntryComponent,
+                    'count-badge': CountBadgeComponent,
+                },
                 data: {
                     list: [
                         {
@@ -70,7 +98,7 @@
                     onDelete(val) {
                         this.list.splice(val, 1);
                     },
-                    onCompleted(val) {
+                    onStatusToggle(val) {
                         this.list[val].completed = !this.list[val].completed;
                     }
                 }

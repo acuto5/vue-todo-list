@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Vue Todo list</title>
+        <link rel="stylesheet" href="style.css" type="text/css">
+    </head>
+    <body>
+        <div class="wrapper" id="app">
+            <div class="block">
+                <form class="form" id="entry" v-on:submit.prevent="onSubmit">
+                    <input class="input"
+                           type="text"
+                           v-model="newItem"
+                           placeholder="Create todo and hit enter"
+                           autofocus
+                           autocomplete="off"
+                    >
+                </form>
+            </div>
+            <div class="block">
+                <h1>Todo list <span v-show="list.length" class="count-badge">{{list.length}}</span></h1>
+                <p v-if="!list.length">Your todo list is empty</p>
+                <ul class="list" id="list">
+                    <li class="item"
+                        :class="{completed: item.completed}"
+                        v-for="(item, index) in list"
+                        :key="'item' + index"
+                    >
+                        <span @click="onCompleted(index)">{{index}}. {{item.title}}</span>
+                        <button class="delete" v-on:click="onDelete(index)">Delete</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
+
+        <script>
+            new Vue({
+                name: 'vue-app',
+                el: '#app',
+                data: {
+                    list: [
+                        {
+                            title: 'pirmas',
+                            completed: true,
+                        },
+                        {
+                            title: 'antras',
+                            completed: false,
+                        },
+                        {
+                            title: 'trečias',
+                            completed: false,
+                        },
+                    ],
+                    newItem: '',
+                },
+                methods: {
+                    onSubmit() {
+                        this.list.push({
+                            title: this.newItem,
+                            completed: false,
+                        });
+                        this.newItem = '';
+                    },
+                    onDelete(val) {
+                        this.list.splice(val, 1);
+                    },
+                    onCompleted(val) {
+                        this.list[val].completed = !this.list[val].completed;
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>

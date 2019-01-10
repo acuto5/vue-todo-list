@@ -1,0 +1,76 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI";
+    font-size: 14px;
+}
+
+.wrapper {
+    margin: 30px;
+}
+
+.block {
+    margin-bottom: 30px;
+    padding: 30px;
+    text-align: center;
+    background: #f0f0f0;
+}
+
+.input {
+    padding: 10px 15px;
+    width: 100%;
+    max-width: 300px;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 18px;
+}
+
+.count-badge {
+    padding: 2px 10px;
+    font-size: 20px;
+    font-weight: normal;
+    background: #ccc;
+    border-radius: 50%;
+}
+
+.list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.list .item {
+    margin: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #666;
+}
+
+.list .item:hover {
+    color: #333;
+}
+
+.list .item .delete {
+    margin-left: 30px;
+    color: red;
+    background: lightpink;
+    border-radius: 2px;
+    border: 1px solid red;
+}
+
+.list .item:hover .delete {
+    color: red;
+    background: lightcoral;
+}
+
+.delete {
+    cursor: pointer;
+}
+
+.list .item.completed {
+    text-decoration: line-through;
+    color: #999;
+}

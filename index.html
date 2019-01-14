@@ -35,7 +35,7 @@
                     >
                         <todo-entry
                                 :index="index"
-                                :title="item.title"
+                                :entry-title="item.title"
                                 v-on:my_toggle="onStatusToggle(index)"
                         ></todo-entry>
                         <button class="delete" v-on:click="onDelete(index)">Delete</button>
@@ -44,7 +44,7 @@
             </div>
 
             <div class="block">
-                <p>Total count <count-badge :count="list.length"></count-badge></p>
+                <p>Todo {{uncompletedItems}} / Completed {{completedItems}}</p>
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
@@ -53,8 +53,14 @@
             //registering
             var TodoEntryComponent = {
                 name: 'todo-entry-name',
-                props: ['index', 'title'],
-                template: '<span class="todo-entry" v-on:click="$emit(\'my_toggle\')"><em>{{index}}</em>. {{title}}</span>'
+                props: {
+                    'index': {
+                        type: Number,
+                        required: true
+                    },
+                    'entryTitle': String,
+                },
+                template: '<span class="todo-entry" v-on:click="$emit(\'my_toggle\')"><em>{{index}}</em>. {{entryTitle}}</span>'
             };
 
             var CountBadgeComponent = {
@@ -87,9 +93,23 @@
                     ],
                     newItem: '',
                 },
+                computed: {
+                    completedItems() {
+                        var total = 0;
+                        this.list.map((item) => {
+                           if (item.completed) {
+                               total++;
+                           }
+                        });
+                        return total;
+                    },
+                    uncompletedItems() {
+                        return this.list.length - this.completedItems;
+                    }
+                },
                 methods: {
                     onSubmit() {
-                        this.list.push({
+                        this.list.unshift({
                             title: this.newItem,
                             completed: false,
                         });
@@ -100,6 +120,18 @@
                     },
                     onStatusToggle(val) {
                         this.list[val].completed = !this.list[val].completed;
+                        this.sortListByCompleted();
+                    },
+                    sortListByCompleted() {
+                        this.list.sort((a, b) => {
+                            if (a.completed < b.completed) {
+                                return -1;
+                            }
+                            if (a.completed > b.completed) {
+                                return 1;
+                            }
+                            return 0;
+                        });
                     }
                 }
             });
